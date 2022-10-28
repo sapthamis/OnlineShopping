@@ -1,0 +1,1 @@
+insert into item(id,description,name,price)values(101,'Shoe','Adidas',3000),(102,'Jeans','Levis',2000);
