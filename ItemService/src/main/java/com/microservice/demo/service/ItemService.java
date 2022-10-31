@@ -13,7 +13,7 @@ import com.microservice.demo.entity.Item;
 import com.microservice.demo.entity.ItemDTO;
 import com.microservice.demo.repository.ItemRepository;
 
-@Transactional
+
 @Service
 public class ItemService {
 	@Autowired
