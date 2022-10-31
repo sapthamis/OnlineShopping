@@ -1,0 +1,1 @@
+insert into customer(id,email,first_name,last_name)values(101,'shubh@gmail.com','shubh','shetty'),(102,'lat@gmail.com','lat','shetty');
