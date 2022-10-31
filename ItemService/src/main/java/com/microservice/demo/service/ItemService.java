@@ -31,13 +31,13 @@ public class ItemService {
 		Item customer = itemRepository.save(modelMapper.map(itemDTO, Item.class));
 		return modelMapper.map(customer, ItemDTO.class);
 	}
-	
-	public ItemDTO update(ItemDTO itemdto,String name) {
-		Item item=itemRepository.findByName(name);
+
+	public ItemDTO update(ItemDTO itemdto, String name) {
+		Item item = itemRepository.findByName(name);
 		item.setName(itemdto.getName());
 		item.setDescription(itemdto.getDescription());
 		item.setPrice(itemdto.getPrice());
-		Item updatedItem=itemRepository.save(item);
+		Item updatedItem = itemRepository.save(item);
 		return modelMapper.map(updatedItem, ItemDTO.class);
 	}
 

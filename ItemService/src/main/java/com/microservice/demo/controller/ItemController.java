@@ -2,9 +2,13 @@ package com.microservice.demo.controller;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,12 +21,13 @@ import org.springframework.web.bind.annotation.RestController;
 import com.microservice.demo.entity.ItemDTO;
 import com.microservice.demo.service.ItemService;
 
-
 @RestController
 @RequestMapping("/items")
 public class ItemController {
 	@Autowired
 	private ItemService itemService;
+
+	private static final Logger LOG = LoggerFactory.getLogger(ItemController.class);
 
 	@ResponseStatus(HttpStatus.OK)
 	@GetMapping("/")
@@ -36,22 +41,12 @@ public class ItemController {
 		return itemService.get(itemName);
 	}
 
-//	@ResponseStatus(HttpStatus.OK)
-//	@PutMapping("/{itemName}")
-//	public ItemDTO put(@PathVariable String itemName,@RequestBody ItemDTO itemDTO) {
-//		itemDTO.setName(itemName);
-//		return itemService.save(itemDTO);
-//	}
-	
 	@ResponseStatus(HttpStatus.OK)
 	@PutMapping("/{itemName}")
-	public ItemDTO put(@PathVariable String itemName,@RequestBody ItemDTO itemDTO) {
-	   ItemDTO itemDto=itemService.update(itemDTO, itemName);
-	   return itemDto;
+	public ItemDTO put(@PathVariable String itemName, @RequestBody ItemDTO itemDTO) {
+		ItemDTO itemDto = itemService.update(itemDTO, itemName);
+		return itemDto;
 	}
-	
-	
-	
 
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@DeleteMapping("/{id}")
@@ -65,5 +60,11 @@ public class ItemController {
 		return itemService.save(itemDTO);
 	}
 
+	@ExceptionHandler(Exception.class)
+	public ResponseEntity<?> handleException(Throwable ex) {
+		LOG.error("There was an error: ", ex);
+		// Add conditional logic to show differnt status on different exceptions
+		return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+	}
 
 }
