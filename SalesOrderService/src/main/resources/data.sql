@@ -1,0 +1,2 @@
+insert into sales_order(id,order_date,order_desc,total_price)values(101,'2020-02-09','Footwear',5000),(102,'2021-02-09','Clothes',3000);
+insert into  order_line_item(id,item_name,item_quantity,order_id)values(1001,'Shoe',2,101),(1002,'Jeans',1,102);
