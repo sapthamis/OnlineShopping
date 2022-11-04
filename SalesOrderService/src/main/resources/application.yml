@@ -1,6 +1,6 @@
 spring:
   application:
-     name: SALES_ORDER_SERVICE
+     name: SALES-ORDER-SERVICE
      
 eureka:
    instance:
