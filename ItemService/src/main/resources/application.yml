@@ -1,0 +1,7 @@
+spring:
+  application:
+     name: ITEM_SERVICE
+     
+eureka:
+   instance:
+     prefer-ip-address: true

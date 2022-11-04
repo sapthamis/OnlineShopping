@@ -28,6 +28,7 @@ public class SalesOrderService {
 	}
 
 	public SalesOrderDTO save(SalesOrderDTO salesOrderDTO) {
+		
 		Date date = new Date();
 		salesOrderDTO.setOrderDate(date);
 		SalesOrder salesOrder = salesOrderRepository.save(modelMapper.map(salesOrderDTO, SalesOrder.class));

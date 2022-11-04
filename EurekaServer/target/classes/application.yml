@@ -1,0 +1,10 @@
+server:
+  port: 8761
+  
+eureka:  client:    fetch-registry: false      
+    register-with-eureka: false         #   to prevent this application to register with eureka as a client
+    
+  
+    #Only clients need to fetch registry to get the registered microservices for 
+    #communication EurekaServer need not register itself and also need not fetch other registered Microservices
+  

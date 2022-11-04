@@ -1,0 +1,8 @@
+spring:
+  application:
+     name: CUSTOMER_SERVICE
+     
+     
+eureka:
+   instance:
+     prefer-ip-address: true

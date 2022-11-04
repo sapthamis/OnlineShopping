@@ -61,6 +61,7 @@ public class SalesOrderController {
 	@PostMapping("/")
 	@ResponseStatus(HttpStatus.CREATED)
 	public SalesOrderDTO add(@RequestBody SalesOrderDTO salesOrderDTO) {
+		
 		return salesOrderService.save(salesOrderDTO);
 	}
 
