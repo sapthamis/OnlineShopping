@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -34,8 +35,8 @@ public class SalesOrder {
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss z", timezone = "IST")
 	private Date orderDate;
 
-	// @NotNull
-	// private long custId;
+	 @NotNull
+	private long custId;
 
 	private String orderDesc;
 

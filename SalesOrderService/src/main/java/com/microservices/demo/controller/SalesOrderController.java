@@ -19,9 +19,10 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-
 import com.microservices.demo.dto.SalesOrderDTO;
 import com.microservices.demo.service.SalesOrderService;
+
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 
 @RequestMapping("/orders")
 @RestControllerAdvice
@@ -42,6 +43,12 @@ public class SalesOrderController {
 	@GetMapping("/{id}")
 	public SalesOrderDTO get(@PathVariable long id) {
 		return salesOrderService.get(id);
+	}
+
+	@ResponseStatus(HttpStatus.OK)
+	@GetMapping(path ="/customerId/{cId}")
+	public SalesOrderDTO getByCustomerId(@PathVariable long cId) {
+		return salesOrderService.getByCustomerId(cId);
 	}
 
 	@ResponseStatus(HttpStatus.OK)

@@ -17,12 +17,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.microservice.demo.entity.ItemDTO;
 import com.microservice.demo.service.ItemService;
 
 @RestController
 @RequestMapping("/items")
+@RestControllerAdvice
 public class ItemController {
 	@Autowired
 	private ItemService itemService;

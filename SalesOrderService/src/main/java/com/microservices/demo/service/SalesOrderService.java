@@ -12,12 +12,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.microservices.demo.dto.ItemServiceDTO;
-import com.microservices.demo.dto.OrderLineItemDTO;
+
 import com.microservices.demo.dto.SalesOrderDTO;
+import com.microservices.demo.entity.Customer;
 import com.microservices.demo.entity.OrderLineItem;
 import com.microservices.demo.entity.SalesOrder;
+
 import com.microservices.demo.feignclient.ItemFeignClient;
+import com.microservices.demo.repository.CustomerSORepository;
 import com.microservices.demo.repository.SalesOrderRepository;
+
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 
 @Service
 public class SalesOrderService {
@@ -25,12 +30,13 @@ public class SalesOrderService {
 	private ModelMapper modelMapper;
 
 	@Autowired
+	private CustomerSORepository customerSORepository;
+
+	@Autowired
 	private ItemFeignClient itemFeignClient;
+	// private Resilience4jConfiguration resilience;
 
 	private static final Logger logger = LoggerFactory.getLogger(SalesOrderService.class);
-
-//	@Autowired
-//	private OrderLineItem orderLineItem;
 
 	@Autowired
 	private SalesOrderRepository salesOrderRepository;
@@ -40,16 +46,31 @@ public class SalesOrderService {
 				.collect(Collectors.toList());
 	}
 
+	@CircuitBreaker(name = "Item", fallbackMethod = "fallbackMethod")
 	public SalesOrderDTO save(SalesOrderDTO salesOrderDTO) {
+		Long sales = salesOrderDTO.getCustId();
+		try {
+			Optional<Customer> customer = Optional.of(customerSORepository.getById(sales));
+			logger.info("customer " + customer);
+		} catch (IllegalArgumentException iae) {
+			iae.printStackTrace();
+		}
 		List<OrderLineItem> orderLineItem = salesOrderDTO.getOrderLineItems();
 		for (int i = 0; i < orderLineItem.size(); i++) {
 			Optional<ItemServiceDTO> items = Optional.of((itemFeignClient.get(orderLineItem.get(i).getItemName())));
-			logger.info("items "+items);	
+			logger.info("items " + items);
 		}
 		Date date = new Date();
 		salesOrderDTO.setOrderDate(date);
 		SalesOrder salesOrder = salesOrderRepository.save(modelMapper.map(salesOrderDTO, SalesOrder.class));
+		logger.info("salesOrder " + salesOrder);
 		return modelMapper.map(salesOrder, SalesOrderDTO.class);
+
+	}
+
+	public SalesOrderDTO fallbackMethod(SalesOrderDTO salesOrderDTO, Throwable th) {
+		logger.error("Error = " + th);
+		return new SalesOrderDTO();
 
 	}
 
@@ -71,6 +92,16 @@ public class SalesOrderService {
 			return null;
 		}
 		return modelMapper.map(orderResult.get(), SalesOrderDTO.class);
+	}
+	
+	public SalesOrderDTO getByCustomerId(long customerId) {
+		Optional<SalesOrder> orderResult=salesOrderRepository.findByCustId(customerId);
+		if(!orderResult.isPresent()) {
+			return null;
+		}
+		logger.info("getorderbycustomer "+orderResult);
+		return modelMapper.map(orderResult.get(), SalesOrderDTO.class);
+		
 	}
 
 	public void delete(long orderId) {

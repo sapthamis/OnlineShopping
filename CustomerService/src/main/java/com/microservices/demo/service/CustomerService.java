@@ -6,8 +6,10 @@ import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
+import com.google.gson.Gson;
 import com.microservices.demo.dto.CustomerDTO;
 import com.microservices.demo.entity.Customer;
 import com.microservices.demo.repository.CustomerRepository;
@@ -19,6 +21,9 @@ public class CustomerService {
 
 	@Autowired
 	private CustomerRepository customerRepository;
+	
+	@Autowired
+	private KafkaTemplate<String, String> kafkaTemplate;
 
 	public List<CustomerDTO> all() {
 		return customerRepository.findAll().stream().map(c -> modelMapper.map(c, CustomerDTO.class))
@@ -28,6 +33,7 @@ public class CustomerService {
 	public CustomerDTO save(CustomerDTO customerDTO) {
 		Customer customer = customerRepository.save(modelMapper.map(customerDTO, Customer.class));
 		CustomerDTO result = modelMapper.map(customer, CustomerDTO.class);
+		kafkaTemplate.send("CustomerCreated", "CustomerCreated", new Gson().toJson(result));
 		return result;
 	}
 
