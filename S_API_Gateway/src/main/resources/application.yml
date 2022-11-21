@@ -14,24 +14,39 @@ spring:
             lb://CUSTOMER-SERVICE
           predicates:
           - Path=/customers/**
+          filters:
+          - AuthorizationHeaderFilter
                  
         - id: ITEM-SERVICE
           uri:
             lb://ITEM-SERVICE
           predicates:
           - Path=/items/**
+          filters:
+           - AuthorizationHeaderFilter
           
         - id: ITEM-SERVICE
           uri:
             lb://ITEM-SERVICE
           predicates:
           - Path=/loadbalance/status/check
+          filters:
+          - AuthorizationHeaderFilter
              
         - id: SALES-ORDER-SERVICE
           uri:
             lb://SALES-ORDER-SERVICE
           predicates:
           - Path=/orders/**
+          filters:
+          - AuthorizationHeaderFilter
+          
+        - id: USER-AUTH
+          uri:
+            lb://USER-AUTH
+          predicates:
+          - Path=/api/auth/**
+         
           
       
           
