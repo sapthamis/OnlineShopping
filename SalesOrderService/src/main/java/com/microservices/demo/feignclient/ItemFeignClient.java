@@ -10,7 +10,7 @@ import com.microservices.demo.dto.ItemServiceDTO;
 
 @FeignClient(value = "API-GATEWAY")
 public interface ItemFeignClient {
-	@GetMapping(value = "/items/{itemName}", consumes = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value = "/items/item/{itemName}", consumes = MediaType.APPLICATION_JSON_VALUE)
 	// Boolean get(@PathVariable String itemName);
 	public ItemServiceDTO get(@PathVariable String itemName);
 

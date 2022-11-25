@@ -32,31 +32,31 @@ public class ItemController {
 	private static final Logger LOG = LoggerFactory.getLogger(ItemController.class);
 
 	@ResponseStatus(HttpStatus.OK)
-	@GetMapping("/")
+	@GetMapping("/item")
 	public List<ItemDTO> all() {
 		return itemService.all();
 	}
 
 	@ResponseStatus(HttpStatus.OK)
-	@GetMapping("/{itemName}")
+	@GetMapping("/item/{itemName}")
 	public ItemDTO get(@PathVariable String itemName) {
 		return itemService.get(itemName);
 	}
 
 	@ResponseStatus(HttpStatus.OK)
-	@PutMapping("/{itemName}")
+	@PutMapping("/items/{itemName}")
 	public ItemDTO put(@PathVariable String itemName, @RequestBody ItemDTO itemDTO) {
 		ItemDTO itemDto = itemService.update(itemDTO, itemName);
 		return itemDto;
 	}
 
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	@DeleteMapping("/{id}")
+	@DeleteMapping("/items/{id}")
 	public void delete(@PathVariable long id) {
 		itemService.delete(id);
 	}
 
-	@PostMapping("/")
+	@PostMapping("/items/")
 	@ResponseStatus(HttpStatus.CREATED)
 	public ItemDTO add(@RequestBody ItemDTO itemDTO) {
 		return itemService.save(itemDTO);

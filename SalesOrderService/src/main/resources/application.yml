@@ -1,7 +1,0 @@
-spring:
-  application:
-     name: SALES-ORDER-SERVICE
-     
-eureka:
-   instance:
-     prefer-ip-address: true

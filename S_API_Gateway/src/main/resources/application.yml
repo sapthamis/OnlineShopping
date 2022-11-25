@@ -1,11 +1,5 @@
-server:
-  port: 8083
-  
+
 spring:
-  application:
-    name: API-GATEWAY
-    
-    
   cloud:
     gateway:
       routes:
@@ -16,12 +10,18 @@ spring:
           - Path=/customers/**
           filters:
           - AuthorizationHeaderFilter
+          
+        - id: ITEM-SERVICE
+          uri:
+            lb://ITEM-SERVICE
+          predicates:
+          - Path=/items/item/**
                  
         - id: ITEM-SERVICE
           uri:
             lb://ITEM-SERVICE
           predicates:
-          - Path=/items/**
+          - Path=/items/items/**
           filters:
            - AuthorizationHeaderFilter
           

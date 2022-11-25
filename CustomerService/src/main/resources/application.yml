@@ -1,9 +1,0 @@
-spring:
-  application:
-     name: CUSTOMER-SERVICE
-     
-     
-     
-eureka:
-   instance:
-     prefer-ip-address: true
